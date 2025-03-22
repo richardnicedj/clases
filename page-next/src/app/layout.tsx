@@ -24,6 +24,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <header>
+        <nav className="flex items-center justify-between p-8 bg-black text-white">
+          <h1>Page</h1>
+          <ul className="flex gap-4 bg-red-900 px-4 py-2">
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/about">About</a>
+            </li>
+            <li>
+              <a href="/table">Table</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

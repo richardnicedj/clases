@@ -1,7 +1,8 @@
+'use client';
 import Image from "next/image";
 import Table, { IData } from "@/components/Table";
 import { TableComponent } from "@/components/Table";
-
+import { useRouter } from "next/navigation";
 const data: IData[] = [
   {
     name: "John Doe",
@@ -14,7 +15,6 @@ const data: IData[] = [
     email: "Juan@gmial.com"
   }
 ];
-
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

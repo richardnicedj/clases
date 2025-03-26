@@ -2,8 +2,11 @@ import { Fragment } from "react"
 
 export interface IData{
     name: string,
+    lastName: string,
     age: number,
-    email: string
+    email: string,
+    phone?: string,
+    isActive: boolean
 }
 
 interface ITableComponent{
@@ -20,16 +23,18 @@ export const TableComponent = ({ data, total }:  ITableComponent ) => {
                 <thead>
                     <tr>
                         <th className="px-4 py-2">Name</th>
+                        <th className="px-4 py-2">Last Name</th>
                         <th className="px-4 py-2">Age</th>
                         <th className="px-4 py-2">Email</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item: IData) => (
-                        <tr key={item.email}>
-                            <td className="border px-4 py-2">{item.name}</td>
-                            <td className="border px-4 py-2">{item.age}</td>
-                            <td className="border px-4 py-2">{item.email}</td>
+                    {data.map((client: IData) => (
+                        <tr key={client.email}>
+                            <td className="border px-4 py-2">{client.name}</td>
+                            <td className="border px-4 py-2">{client.lastName}</td>
+                            <td className="border px-4 py-2">{client.age}</td>
+                            <td className="border px-4 py-2">{client.email}</td>
                         </tr>
                     ))}
                 </tbody>

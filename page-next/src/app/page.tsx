@@ -5,14 +5,19 @@ import { TableComponent } from "@/components/Table";
 import { useRouter } from "next/navigation";
 const data: IData[] = [
   {
-    name: "John Doe",
+    name: "John ",
+    lastName: "perez",
     age: 32,
-    email: "joe@gmial.com"
+    email: "joe@gmial.com",
+    phone:"1234567889",
+    isActive: true
   },
   {
-    name: "Juan Doe",
+    name: "Juan ",
+    lastName: "roman",
     age: 45,
-    email: "Juan@gmial.com"
+    email: "Juan@gmial.com",
+    isActive: false
   }
 ];
 export default function Home() {

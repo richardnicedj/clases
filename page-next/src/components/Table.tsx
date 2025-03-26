@@ -1,3 +1,5 @@
+import { faBatteryEmpty, faBatteryFull } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Fragment } from "react"
 
 export interface IData{
@@ -26,6 +28,7 @@ export const TableComponent = ({ data, total }:  ITableComponent ) => {
                         <th className="px-4 py-2">Last Name</th>
                         <th className="px-4 py-2">Age</th>
                         <th className="px-4 py-2">Email</th>
+                        <th className="px-4 py-2">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +38,12 @@ export const TableComponent = ({ data, total }:  ITableComponent ) => {
                             <td className="border px-4 py-2">{client.lastName}</td>
                             <td className="border px-4 py-2">{client.age}</td>
                             <td className="border px-4 py-2">{client.email}</td>
+                            <td className={`text-${client.isActive ? 'green' : 'red'}-500 border px-4 py-2`}>
+                                <FontAwesomeIcon
+                                    icon={client.isActive ? faBatteryFull : faBatteryEmpty}
+                                />
+                                User
+                            </td>
                         </tr>
                     ))}
                 </tbody>

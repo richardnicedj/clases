@@ -61,16 +61,7 @@ export const TableComponent = ({ data, total }:  ITableComponent ) => {
                     ))}
                 </tbody>
             </table>
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <h2 className="text-xl font-bold">Título del Modal</h2>
-                <p className="mt-2">Este es un modal reutilizable en Next.js</p>
-                <button 
-                    onClick={() => setIsModalOpen(false)} 
-                    className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg"
-                >
-                    Cerrar
-                </button>
-            </Modal>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
         </Fragment>
     );
 }

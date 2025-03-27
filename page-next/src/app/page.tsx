@@ -1,6 +1,6 @@
 'use client';
 import Image from "next/image";
-import Table, { IData } from "@/components/Table";
+import { IData } from "@/components/Table";
 import { TableComponent } from "@/components/Table";
 import { useRouter } from "next/navigation";
 const data: IData[] = [

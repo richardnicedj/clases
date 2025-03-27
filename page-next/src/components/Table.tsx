@@ -1,6 +1,7 @@
 import { faBatteryEmpty, faBatteryFull } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
+import Modal from './Modal';
 
 export interface IData{
     name: string,
@@ -17,15 +18,17 @@ interface ITableComponent{
 }
 
 export const TableComponent = ({ data, total }:  ITableComponent ) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const tittle = `Table employes ${total}`
     const handleClick = () =>{
-        console.log("click")
+        setIsModalOpen(true)
     }
     return (
         <Fragment>
             <div>
                 <h1>{tittle}</h1>
-                <button className='border rounded p-1 bg-white text-black hover:bg-sky-500' onClick={handleClick}>
+                <button className='border rounded p-1 bg-white text-black hover:bg-sky-500'  onClick={handleClick} >
                     New employe
                 </button>
             </div>
@@ -58,6 +61,16 @@ export const TableComponent = ({ data, total }:  ITableComponent ) => {
                     ))}
                 </tbody>
             </table>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <h2 className="text-xl font-bold">Título del Modal</h2>
+                <p className="mt-2">Este es un modal reutilizable en Next.js</p>
+                <button 
+                    onClick={() => setIsModalOpen(false)} 
+                    className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg"
+                >
+                    Cerrar
+                </button>
+            </Modal>
         </Fragment>
     );
 }

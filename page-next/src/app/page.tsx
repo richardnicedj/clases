@@ -2,24 +2,33 @@
 import Image from "next/image";
 import { IData } from "@/components/Table";
 import { TableComponent } from "@/components/Table";
-const data: IData[] = [
-  {
-    name: "John ",
-    lastName: "perez",
-    age: 32,
-    email: "joe@gmial.com",
-    phone:"1234567889",
-    isActive: true
-  },
-  {
-    name: "Juan ",
-    lastName: "roman",
-    age: 45,
-    email: "Juan@gmial.com",
-    isActive: false
-  }
-];
+import { useEffect, useState } from "react";
 export default function Home() {
+  const [data, setData] = useState<IData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/users");
+        if (!response.ok) throw new Error("Error al obtener los datos");
+
+        const result: IData[] = await response.json();
+        setData(result); 
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p className="text-center text-gray-500">Cargando...</p>;
+  if (error) return <p className="text-center text-red-500">Error: {error}</p>;
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start border bg-red-900 p-8">

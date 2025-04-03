@@ -20,15 +20,15 @@ interface ITableComponent{
 export const TableComponent = ({ data, total }:  ITableComponent ) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
     const tittle = `Table employes ${total}`
-    const handleClick = () =>{
-        setIsModalOpen(true)
-    }
     return (
         <Fragment>
             <div>
                 <h1>{tittle}</h1>
-                <button className='border rounded p-1 bg-white text-black hover:bg-sky-500'  onClick={handleClick} >
+                <button className='border rounded p-1 bg-white text-black hover:bg-sky-500'  onClick={openModal} >
                     New employe
                 </button>
             </div>
@@ -61,7 +61,7 @@ export const TableComponent = ({ data, total }:  ITableComponent ) => {
                     ))}
                 </tbody>
             </table>
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
+            <Modal isOpen={isModalOpen} onClose={closeModal} />
         </Fragment>
     );
 }

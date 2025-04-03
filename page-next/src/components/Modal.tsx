@@ -1,5 +1,5 @@
-// components/Modal.tsx
-import { ReactNode, FormEvent, useState } from "react";
+// page-next/src/components/Modal.tsx
+import { FormEvent, useState } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -8,14 +8,41 @@ interface ModalProps {
 
 const Modal = ({ isOpen, onClose }: ModalProps) => {
   const [formData, setFormData] = useState({ name: "", email: "" });
+  const [isLoading, setIsLoading] = useState(false); // Estado de carga
+  const [error, setError] = useState<string | null>(null); // Estado de error
 
-  const handleSubmit = (e: FormEvent) => {
+  // Función para enviar el formulario
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Formulario enviado:", formData);
-    onClose(); // Cierra el modal después de enviar
+    setIsLoading(true);
+    setError(null); // Resetear error
+
+    try {
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al crear el usuario");
+      }
+
+      const data = await response.json();
+      console.log("Usuario creado:", data); // Manejo de la respuesta de la API
+
+      onClose(); // Cierra el modal después de enviar
+      setFormData({ name: "", email: "" }); // Limpiar el formulario
+    } catch (error) {
+      setError("Error al enviar los datos. Intenta nuevamente."); // Mostrar el error
+    } finally {
+      setIsLoading(false); // Finaliza el estado de carga
+    }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Si el modal no está abierto, no renderizarlo
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -51,8 +78,14 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
             />
           </div>
 
-          <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
-            Enviar
+          {error && <p className="text-red-500">{error}</p>} {/* Mostrar error si existe */}
+          
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white p-2 rounded"
+            disabled={isLoading} // Deshabilitar el botón mientras está cargando
+          >
+            {isLoading ? "Cargando..." : "Enviar"}
           </button>
         </form>
       </div>

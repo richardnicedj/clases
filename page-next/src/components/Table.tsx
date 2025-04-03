@@ -1,6 +1,6 @@
 import { faBatteryEmpty, faBatteryFull } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import Modal from './Modal';
 
 export interface IData{
@@ -12,18 +12,48 @@ export interface IData{
     isActive: boolean
 }
 
-interface ITableComponent{
-    data: IData[],
-    total: number
-}
+// interface ITableComponent{
+//     data: IData[],
+//     total: number
+// }
 
-export const TableComponent = ({ data, total }:  ITableComponent ) => {
+export const TableComponent = () => {
+    const [data, setData] = useState<IData[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
 
-    const tittle = `Table employes ${total}`
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("/api/users");
+                if (!response.ok) throw new Error("Error al obtener los datos");
+
+                const result: IData[] = await response.json();
+                setData(result); 
+            } catch (err) {
+                setError((err as Error).message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    if (loading) return <p className="text-center text-gray-500">Cargando...</p>;
+    if (error) return <p className="text-center text-red-500">Error: {error}</p>;
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = (user:IData) => {
+        if (user) {
+            setData(data => [...data, user])
+        }
+        setIsModalOpen(false)
+    };
+
+
+    const tittle = `Table employes ${data.length}`
     return (
         <Fragment>
             <div>

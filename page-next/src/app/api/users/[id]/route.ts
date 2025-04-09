@@ -17,14 +17,19 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 }
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
+  const { id } = params;
+
   try {
     const { name, lastName, age, email, phone, isActive } = await req.json();
+
     const updatedUser = await prisma.user.update({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
       data: { name, lastName, age, email, phone, isActive },
     });
+
     return NextResponse.json(updatedUser, { status: 200 });
   } catch (error) {
+    console.error("PUT error:", error);
     return NextResponse.json({ error: "No se pudo actualizar el usuario" }, { status: 400 });
   }
 }

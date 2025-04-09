@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from "react"
 import Modal from './Modal';
 
 export interface IUser{
+    id?: number,
     name: string,
     lastName: string,
     age: number,
@@ -19,21 +20,21 @@ export const TableComponent = () => {
     const [error, setError] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const fetchData = async () => {
+        try {
+            const response = await fetch("/api/users");
+            if (!response.ok) throw new Error("Error al obtener los datos");
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("/api/users");
-                if (!response.ok) throw new Error("Error al obtener los datos");
+            const result: IUser[] = await response.json();
+            setUsers(result); 
+        } catch (err) {
+            setError((err as Error).message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-                const result: IUser[] = await response.json();
-                setUsers(result); 
-            } catch (err) {
-                setError((err as Error).message);
-            } finally {
-                setLoading(false);
-            }
-        };
+    useEffect(() => {  
         fetchData();
     }, []);
 
@@ -49,7 +50,7 @@ export const TableComponent = () => {
     }
     const closeModal = (user?:IUser) => {
         if (user) {
-            setUsers(data => [...data, user])
+            fetchData();
         }
         setUserEdit(undefined)
         setIsModalOpen(false)

@@ -35,33 +35,35 @@ const Modal = ({ isOpen, onClose, user }: ModalProps) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+  
+    const isEdit = !!user?.id;
+  
     try {
-      const response = await fetch("/api/users", {
-        method: "POST",
+      const response = await fetch(isEdit ? `/api/users/${formData.id}` : "/api/users", {
+        method: isEdit ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...formData,
-          age: Number(formData.age), // Convertir age a número
+          age: Number(formData.age),
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error("El email ya está registrado o datos inválidos");
       }
-
+  
       const data = await response.json();
-      console.log("Usuario creado:", data);
-
+  
       onClose(data);
-      setFormData({ name: "", lastName: "", age: "", email: "", phone: "", isActive: true });
+      setFormData(initialUser);
     } catch (error) {
       setError("El email ya está registrado o los datos son inválidos.");
     } finally {
       setIsLoading(false);
     }
-  };
+  };  
 
   if (!isOpen) return null;
 
@@ -104,7 +106,7 @@ const Modal = ({ isOpen, onClose, user }: ModalProps) => {
             <input
               type="number"
               value={formData.age}
-              onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+              onChange={(e) => setFormData({ ...formData, age: Number(e.target.value) })}
               required
               className="w-full p-2 border rounded text-black"
             />

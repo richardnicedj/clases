@@ -45,7 +45,7 @@ export const TableComponent = () => {
     if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
     const openModal = () => setIsModalOpen(true);
-    const closeModal = (user:IData) => {
+    const closeModal = (user?:IData) => {
         if (user) {
             setData(data => [...data, user])
         }
@@ -56,21 +56,21 @@ export const TableComponent = () => {
     const tittle = `Table employes ${data.length}`
     return (
         <Fragment>
-            <div>
+            <div className='flex justify-between items-center'>
                 <h1>{tittle}</h1>
                 <button className='border rounded p-1 bg-white text-black hover:bg-sky-500'  onClick={openModal} >
-                    New employe
+                    New User
                 </button>
             </div>
-            <table className="table-auto">
+            <table className="table-auto mt-4">
                 <thead>
                     <tr>
-                        <th className="px-4 py-2">Name</th>
-                        <th className="px-4 py-2">Last Name</th>
-                        <th className="px-4 py-2">Age</th>
-                        <th className="px-4 py-2">Email</th>
-                        <th className="px-4 py-2">Phone</th>
-                        <th className="px-4 py-2">Status</th>
+                        <th className="border px-4 py-2">Name</th>
+                        <th className="border px-4 py-2">Last Name</th>
+                        <th className="border px-4 py-2">Age</th>
+                        <th className="border px-4 py-2">Email</th>
+                        <th className="border px-4 py-2">Phone</th>
+                        <th className="border px-4 py-2">Status</th>
                     </tr>
                 </thead>
                 <tbody>

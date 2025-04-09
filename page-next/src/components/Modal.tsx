@@ -1,28 +1,40 @@
-import { FormEvent, useState } from "react";
-import { IData } from "./Table";
+import { FormEvent, useEffect, useState } from "react";
+import { IUser } from "./Table";
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: (user?:IData) => void;
+  onClose: (user?:IUser) => void;
+  user?: IUser;
 }
 
-const Modal = ({ isOpen, onClose }: ModalProps) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    lastName: "",
-    age: "",
-    email: "",
-    phone: "",
-    isActive: true,
-  });
+const initialUser: IUser = {
+  name: "",
+  lastName: "",
+  age: 0,
+  email: "",
+  phone: "",
+  isActive: true,
+};
+
+const Modal = ({ isOpen, onClose, user }: ModalProps) => {
+  const [formData, setFormData] = useState<IUser>(initialUser);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    console.log("Modal----", user);
+
+    if (user) {
+      setFormData(user);
+    } else {
+      setFormData(initialUser);
+    }
+  }, [user, isOpen]);
+  
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-
     try {
       const response = await fetch("/api/users", {
         method: "POST",
@@ -72,7 +84,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-black"
             />
           </div>
 
@@ -83,7 +95,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
               value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-black"
             />
           </div>
 
@@ -94,7 +106,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
               value={formData.age}
               onChange={(e) => setFormData({ ...formData, age: e.target.value })}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-black"
             />
           </div>
 
@@ -105,7 +117,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-black"
             />
           </div>
 
@@ -116,7 +128,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-black"
             />
           </div>
 

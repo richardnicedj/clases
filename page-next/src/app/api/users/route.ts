@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 // Obtener todos los usuarios
 export async function GET() {
   try {
-    const users = await prisma.user.findMany({ include: { tasks: true } });
+    const users = await prisma.user.findMany({ where:{isActive:true}, include: { tasks: true } });
     return NextResponse.json(users, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "Error al obtener los usuarios" }, { status: 500 });

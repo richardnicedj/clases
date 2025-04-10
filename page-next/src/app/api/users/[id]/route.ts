@@ -36,7 +36,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   try {
-    await prisma.user.delete({ where: { id: Number(params.id) } });
+    const { id } = params;
+    await prisma.user.update({
+      where: { id: Number(id) },
+      data: { isActive: false }});
     return NextResponse.json({ message: "Usuario eliminado correctamente" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "No se pudo eliminar el usuario" }, { status: 400 });

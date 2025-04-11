@@ -86,7 +86,14 @@ export default function UserPage({ params }: PageProps) {
 
   return (
     <div className="max-w-lg mx-auto mt-8 p-4 bg-white shadow rounded">
-      <h1 className="text-xl font-bold mb-4">Editar usuario #{id}</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-xl font-bold mb-4 text-black">Editar usuario #{id}</h1>
+        <button
+          className="bg-blue-500 text-white p-2 rounded"
+          onClick={() => router.push(`/task/${id}`)}
+          >Task
+          </button>
+      </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-gray-700">Nombre:</label>
